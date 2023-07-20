@@ -5,13 +5,15 @@ import json
 # config = ConfigParser()
 # config.read(file)
 
+
 def get_file_path_from_config(file_name):
     # file = r"C:\Users\vhm\OneDrive - Kattegatcentret\Udstilling\Brightsign\brightsign_logs&scripts\config.ini"
     file = r"C:\VHM_local\Kode\BrightsignLogTools\config.ini"
     parser = ConfigParser()
     parser.read(file)
-    file_path = parser.get('file_paths', file_name)
+    file_path = parser.get("file_paths", file_name)
     return file_path
+
 
 # def get_search_words_from_config(player_name):
 #     file = 'config.ini'

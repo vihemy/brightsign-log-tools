@@ -12,7 +12,7 @@ def main(log_destination_root_folder):
 
     #Searchwords
     sw1="LE=touch"
-    sw2="LS=Ventilationsanlaeg" #sick + undgår æøå
+    sw2="LS=Ventilationsanlaeg" #sic + undgår æøå
     sw3="LS=Vandbehandling" #undgår æøå
 
     #The dict that holds filename and data
