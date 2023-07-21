@@ -1,17 +1,21 @@
+# External modules
+import re
 import requests
 import json
 import webbrowser
 import os
 import shutil
 
+# Internal modules
 from utils import directory_functions
 
 
 class Player:
-    def __init__(self, name, ip, serial):
+    def __init__(self, name, ip, serial, searchwords):
         self.name = name
         self.ip = ip
         self.serial = serial
+        self.searchwords = searchwords
 
     def player_name(self):
         return self.name
@@ -76,20 +80,32 @@ class Player:
     def _copy_unique_files_to_directory(self, source_path, destination_path):
         nr_files_moved = 0
         for filename in os.listdir(source_path):
-            if self._is_file_original(filename):
+            if (
+                self._does_file_belong_to_player == True
+                and self._is_file_duplicate(filename) == False
+            ):
                 shutil.copy(os.path.join(source_path, filename), destination_path)
                 nr_files_moved += 1
         print(
             f"\nFiles copied from {source_path} to {destination_path}: {nr_files_moved}"
         )
 
-    def _is_file_original(self, filename):
-        # Serial is used as identifier, as name is not in filename
-        # "(" in filename implies that the file is a duplicate"
-        if self.serial in filename and not "(" in filename:
+    def _does_file_belong_to_player(self, filename):
+        # uses serial because player-name is not present in file-name
+        if self.serial in filename:
             return True
         else:
             return False
+
+    def _is_file_duplicate(filename):
+        # Define the regular expression pattern to match "(number)"
+        pattern = r"\(\d+\)"
+
+        # Search for the pattern in the filename
+        match = re.search(pattern, filename)
+
+        # If a match is found, return True; otherwise, return False
+        return bool(match)
 
     # def analyze_logs():
     #     log_directory =
