@@ -63,26 +63,33 @@ class Player:
             )
             webbrowser.open(download_url)
 
-    def move_logs(self, src_path, dst_root):
+    def copy_logs_to_new_directory(self, source_path, destination_root):
+        destination_path = self._set_destination_path(destination_root)
+        directory_functions.create_directory(destination_path)
+        self._copy_unique_files_to_directory(source_path, destination_path)
+
+    def _set_destination_path(self, destination_root):
         # sets destination folder using the player name
-        dst_path = self._set_dst_path(dst_root, self.name)
-        directory_functions.create_directory(dst_path)
+        destination_path = destination_root + f"\{self.name}"
+        return destination_path
 
-        # uses string_to_match and string_to_avoid to find relavant
-        # files and avoid dublicates (paranthesis implies duplication)
-        string_to_match = self.serial
-        string_to_avoid = "("
-        self._move_certain_files(src_path, dst_path, string_to_match, string_to_avoid)
-
-    def _set_dst_path(dst_root, player_name):
-        dst_path = dst_root + f"\{player_name}"
-        return dst_path
-
-    def _move_certain_files(src_path, dst_path, string_to_match, string_to_avoid):
+    def _copy_unique_files_to_directory(self, source_path, destination_path):
         nr_files_moved = 0
-        for filename in os.listdir(src_path):
-            # Move file if the filename contains string_to_match and doesn't contain string_to_avoid
-            if string_to_match in filename and not string_to_avoid in filename:
-                shutil.copy(os.path.join(src_path, filename), dst_path)
+        for filename in os.listdir(source_path):
+            if self._is_file_original(filename):
+                shutil.copy(os.path.join(source_path, filename), destination_path)
                 nr_files_moved += 1
-        print(f"\nFiles copied from {src_path} to {dst_path}: {nr_files_moved}")
+        print(
+            f"\nFiles copied from {source_path} to {destination_path}: {nr_files_moved}"
+        )
+
+    def _is_file_original(self, filename):
+        # Serial is used as identifier, as name is not in filename
+        # "(" in filename implies that the file is a duplicate"
+        if self.serial in filename and not "(" in filename:
+            return True
+        else:
+            return False
+
+    # def analyze_logs():
+    #     log_directory =
