@@ -16,16 +16,6 @@ def main():
     # download_logs(player_instances)
     move_logs(player_instances)
 
-    # # ------------------------------------------------------ Move LOGS ------------------------------------------------------
-    # log_source_directory = utilities.get_file_path_from_config(
-    #     "log_source_directory"
-    # )
-    # log_destination_root_folder = utilities.get_file_path_from_config(
-    #     "log_destination_root_folder"
-    # )
-
-    # log_downloader(players, log_source_directory, log_destination_root_folder)
-
     # # ------------------------------------------------------ ANALYZE LOGS ------------------------------------------------------
     # dvaergpingvin_main(log_destination_root_folder)
     # kongepingvin_main(log_destination_root_folder)
@@ -38,9 +28,7 @@ def main():
 
 def get_player_instances():
     index_path = utilities.get_file_path_from_config("brightsign_index_path")
-
     player_instances = utilities.get_player_instances_from_index(index_path)
-
     return player_instances
 
 
@@ -58,7 +46,7 @@ def move_logs(player_instances):
 
     for player in player_instances:
         mover = LogMover(player, src_folder, dst_parent_folder)
-        mover.copy_logs_to_new_directory(src_folder, dst_parent_folder)
+        mover.relocate_logs()
 
 
 if __name__ == "__main__":
