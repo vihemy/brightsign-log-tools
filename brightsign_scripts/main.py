@@ -1,5 +1,5 @@
-from utils import get_file_path_from_config
-from utils import get_dict_from_player_index
+import utilities
+from log_downloader import LogDownloader
 
 from loghandlers import logscraper_main
 from loghandlers import logdistributer_main
@@ -12,25 +12,33 @@ from loghandlers import ekspertskaerm2_main
 
 def main():
     # ------------------------------------------------------ CONFIG ------------------------------------------------------
-    index_path = get_file_path_from_config("brightsign_index_path")
-    players = get_dict_from_player_index(index_path)
+    index_path = utilities.get_file_path_from_config("brightsign_index_path")
 
-    # ------------------------------------------------------ DOWNLOAD LOGS ------------------------------------------------------
-    logscraper_main(players)
+    player_instances = utilities.get_player_instances_from_index(index_path)
 
-    # ------------------------------------------------------ MOVE LOGS ------------------------------------------------------
-    log_download_folder = get_file_path_from_config("log_download_folder")
-    log_destination_root_folder = get_file_path_from_config("log_destination_root_folder")
-    logdistributer_main(players, log_download_folder, log_destination_root_folder)
+    # # ------------------------------------------------------ DOWNLOAD LOGS -----------------------------------------------------
 
-    # ------------------------------------------------------ ANALYZE LOGS ------------------------------------------------------
-    dvaergpingvin_main(log_destination_root_folder)
-    kongepingvin_main(log_destination_root_folder)
-    lyttestation_common_main(log_destination_root_folder, "Lyttestation 1")
-    lyttestation_common_main(log_destination_root_folder, "Lyttestation 2")
-    lyttestation_common_main(log_destination_root_folder, "Lyttestation 3")
-    ekspertskaerm1_main(log_destination_root_folder)
-    ekspertskaerm2_main(log_destination_root_folder)
+    for player in player_instances:
+        downloader = LogDownloader(player)
+        downloader.download_logs()
+
+    # # ------------------------------------------------------ MOVE LOGS ------------------------------------------------------
+    # log_download_folder = utilities.get_file_path_from_config("log_download_folder")
+    # log_destination_root_folder = utilities.get_file_path_from_config(
+    #     "log_destination_root_folder"
+    # )
+
+    # log_downloader(players, log_download_folder, log_destination_root_folder)
+
+    # # ------------------------------------------------------ ANALYZE LOGS ------------------------------------------------------
+    # dvaergpingvin_main(log_destination_root_folder)
+    # kongepingvin_main(log_destination_root_folder)
+    # lyttestation_common_main(log_destination_root_folder, "Lyttestation 1")
+    # lyttestation_common_main(log_destination_root_folder, "Lyttestation 2")
+    # lyttestation_common_main(log_destination_root_folder, "Lyttestation 3")
+    # ekspertskaerm1_main(log_destination_root_folder)
+    # ekspertskaerm2_main(log_destination_root_folder)
 
 
-main()
+if __name__ == "__main__":
+    main()

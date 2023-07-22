@@ -9,8 +9,10 @@ from player import Player
 
 
 class LogMover:
-    def __init__(self, player: Player):
+    def __init__(self, player: Player, source_path, destination_root):
         self.player = player
+        self.source_path = source_path
+        self.destination_root = destination_root
 
     def copy_logs_to_new_directory(self, source_path, destination_root):
         destination_path = self._set_destination_path(destination_root)

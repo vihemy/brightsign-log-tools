@@ -1,15 +1,20 @@
 # Extermal modules
 from configparser import ConfigParser
 from datetime import date
+from pathlib import Path
 import os
 import pandas as pd
 
+# Internal modules
+from player import Player
+
 
 def get_file_path_from_config(file_name):
-    # file = r"C:\Users\vhm\OneDrive - Kattegatcentret\Udstilling\Brightsign\brightsign_logs&scripts\config.ini"
-    file = r"C:\VHM_local\Kode\BrightsignLogTools\config.ini"
+    this_file = Path(__file__)
+    ROOT_DIR = this_file.parent.parent.absolute()
+    config_path = os.path.join(ROOT_DIR, "config.ini")
     parser = ConfigParser()
-    parser.read(file)
+    parser.read(config_path)
     file_path = parser.get("file_paths", file_name)
     return file_path
 
@@ -33,11 +38,16 @@ def create_directory(path):
         os.makedirs(path)
 
 
-def get_dict_from_player_index(index_path):
-    # get relavant columns from excel file (Ip-adress is used for download, serial for identification)
-    df = pd.read_excel(str(index_path), usecols=["Navn", "IP-adresse", "Serienummer"])
-    # create new tuple-column from columns ip-adresse and serienummer
-    df["IP_serial"] = list(zip(df["IP-adresse"], df["Serienummer"]))
-    # creates dict with new tuple as value
-    players = df.set_index("Navn")["IP_serial"].to_dict()
-    return players
+def get_player_instances_from_index(index_path):
+    df = pd.read_excel(
+        str(index_path),
+        usecols=["Navn", "IP-adresse", "Serienummer", "Søgeord"],
+    )
+    players = df.values.tolist()
+    player_instances = []
+    for player in players:
+        # unpacks values from the each item in players-list inside
+        # an instance of the Player-class and appends this to
+        # a new list
+        player_instances.append(Player(*player))
+    return player_instances
