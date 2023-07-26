@@ -9,7 +9,23 @@ from player import Player
 
 
 class LogMover:
-    """Class to handle moving of logs from a BrightSign player between direcotries"""
+    """
+    Class to handle moving of logs from a BrightSign player between direcotries
+
+    Attributes
+    ----------
+    player : Player
+        an instance of the Player class
+    src_folder : str
+        the source directory from which to move logs
+    dst_parent_folder : str
+        the destination directory to which to move logs
+
+    Methods
+    -------
+    relocate_logs()
+        Move all logs from download-folder to a given destination directory
+    """
 
     def __init__(self, player: Player, src_folder, dst_parent_folder):
         self.player = player

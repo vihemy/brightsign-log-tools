@@ -8,7 +8,19 @@ from player import Player
 
 
 class LogDownloader:
-    """Class to handle downloading of logs from a BrightSign player using Brightsign's Diagnostic Web Server"""
+    """
+    Class to handle downloading of logs from a BrightSign player using Brightsign's Diagnostic Web Server
+
+    Attributes
+    ----------
+    player : Player
+        an instance of the Player class
+
+    Methods
+    -------
+    download_logs()
+        Download all logs from a given BrightSign players log directory via Brightsign's Diagnostic Web Server
+    """
 
     def __init__(self, player: Player):
         self.player = player
