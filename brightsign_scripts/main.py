@@ -2,43 +2,29 @@ import utilities
 from log_downloader import LogDownloader
 from log_mover import LogMover
 
-from loghandlers import logscraper_main
-from loghandlers import logdistributer_main
-from loghandlers import dvaergpingvin_main
-from loghandlers import kongepingvin_main
-from loghandlers import lyttestation_common_main
-from loghandlers import ekspertskaerm1_main
-from loghandlers import ekspertskaerm2_main
-
 
 def main():
     player_instances = get_player_instances()
-    # download_logs(player_instances)
+    download_logs(player_instances)
     move_logs(player_instances)
-
-    # # ------------------------------------------------------ ANALYZE LOGS ------------------------------------------------------
-    # dvaergpingvin_main(log_destination_root_folder)
-    # kongepingvin_main(log_destination_root_folder)
-    # lyttestation_common_main(log_destination_root_folder, "Lyttestation 1")
-    # lyttestation_common_main(log_destination_root_folder, "Lyttestation 2")
-    # lyttestation_common_main(log_destination_root_folder, "Lyttestation 3")
-    # ekspertskaerm1_main(log_destination_root_folder)
-    # ekspertskaerm2_main(log_destination_root_folder)
 
 
 def get_player_instances():
+    """Return a list of instances of type Player using player-data found through config.ini."""
     index_path = utilities.get_file_path_from_config("brightsign_index_path")
     player_instances = utilities.get_player_instances_from_index(index_path)
     return player_instances
 
 
 def download_logs(player_instances):
+    """Download all logs from a given list of BrightSign players via Brightsign's Diagnostic Web Server"""
     for player in player_instances:
         downloader = LogDownloader(player)
         downloader.download_logs()
 
 
 def move_logs(player_instances):
+    """Move all logs from a given list of BrightSign players to a destination directory configured in config.ini"""
     src_folder = utilities.get_file_path_from_config("log_source_directory")
     dst_parent_folder = utilities.get_file_path_from_config(
         "log_destination_parent_folder"
