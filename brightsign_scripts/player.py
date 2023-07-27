@@ -1,7 +1,7 @@
 class Player:
     """
     A class to represent a BrightSign player
-    
+
     Attributes
     ----------
     name : str
@@ -15,7 +15,7 @@ class Player:
     """
 
     def __init__(self, name, ip, serial, searchwords):
-        self.name = name
-        self.ip = ip
-        self.serial = serial
-        self.searchwords = searchwords
+        self.name: str = name
+        self.ip: str = ip
+        self.serial: str = serial
+        self.searchwords: str = searchwords
