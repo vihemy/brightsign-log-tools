@@ -1,9 +1,9 @@
 # Extermal modules
+import os
+import pandas as pd
 from configparser import ConfigParser
 from datetime import date
 from pathlib import Path
-import os
-import pandas as pd
 
 # Internal modules
 from player import Player
@@ -22,7 +22,6 @@ def get_file_path_from_config(config_key):
 
 def get_date():
     """Return today's date in danish format."""
-    # converts to danish date-format
     today = date.today()
     today = today.strftime("%d-%m-%Y")
     return today
@@ -30,13 +29,12 @@ def get_date():
 
 def shorten_filename(filename):
     """Return a shortened version of a given filename (using the final component of the path)."""
-    # shortens filename for convience
     filenameShort = os.path.basename(filename)
     return filenameShort
 
 
 def create_directory(path):
-    """Create new path if doesn't exist."""
+    """Create new folder path if it doesn't already exist."""
     if not os.path.exists(path):
         os.makedirs(path)
 
@@ -51,7 +49,6 @@ def get_player_instances_from_index(index_path):
     player_instances = []
     for player in players:
         # unpacks values from the each item in players-list inside
-        # an instance of the Player-class and appends this to
-        # a new list
+        # an instance of the Player-class and appends to list
         player_instances.append(Player(*player))
     return player_instances
