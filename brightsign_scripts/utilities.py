@@ -9,7 +9,7 @@ from pathlib import Path
 from player import Player
 
 
-def get_file_path_from_config(config_key):
+def get_path_from_config(config_key):
     """Return a file path from a given key in config.ini."""
     this_file = Path(__file__)
     ROOT_DIR = this_file.parent.parent.absolute()
@@ -21,7 +21,7 @@ def get_file_path_from_config(config_key):
 
 
 def get_date():
-    """Return today's date in danish format."""
+    """Return today's date in danish format (dd-mm-yy)."""
     today = date.today()
     today = today.strftime("%d-%m-%Y")
     return today
