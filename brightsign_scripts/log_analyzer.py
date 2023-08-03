@@ -1,9 +1,13 @@
+# External modules
 import os
-import csv
 import re
 import pandas as pd
 
+# Internal modules
 from player import Player
+from utilities import get_date
+from utilities import get_path_from_config
+from utilities import create_directory
 
 
 class LogAnalyzer:
@@ -19,7 +23,7 @@ class LogAnalyzer:
 
     Methods
     -------
-    analyze_logs_and_generate_csv(csv_filename)
+    analyze_logs_and_generate_csv()
         Analyze log files and generate a CSV file with the count of search words in each log file
         as well as the total count of all appearances of the search words.
     """
@@ -27,22 +31,22 @@ class LogAnalyzer:
     def __init__(self, player: Player, file_directory):
         self.player = player
         self.file_directory = file_directory
-        self.search_word_counts = pd.DataFrame(
+        self.df = pd.DataFrame(
             columns=["Log File", "Total Count"]
             + [word.strip() for word in self.player.searchwords.split(",")]
         )
         self.total_count = 0
 
-    def analyze_logs_and_generate_csv(self, csv_filename):
+    def analyze_logs_and_generate_csv(self):
         log_files = self._get_log_files()
         for log_file in log_files:
             log_content = self._read_log_content(log_file)
-            search_word_counts = self._count_search_words(log_content)
-            total_count = sum(search_word_counts.values())
-            self._add_to_search_word_counts(log_file, total_count, search_word_counts)
+            df = self._count_searchwords(log_content)
+            total_count = sum(df.values())
+            self._add_to_df(log_file, total_count, df)
             self.total_count += total_count
 
-        self._write_csv_file(csv_filename)
+        self._write_csv_file()
 
     def _get_log_files(self):
         log_files = [
@@ -58,21 +62,28 @@ class LogAnalyzer:
             log_content = log_file.read()
         return log_content
 
-    def _count_search_words(self, log_content):
-        search_word_counts = {}
-        for search_word in self.player.searchwords.split(","):
-            occurrences = len(
-                re.findall(search_word.strip(), log_content, re.IGNORECASE)
-            )
-            search_word_counts[search_word.strip()] = occurrences
-        return search_word_counts
+    def _count_searchwords(self, log_content):
+        df = {}
+        for sw in self.player.searchwords.split(","):
+            occurrences = len(re.findall(sw.strip(), log_content, re.IGNORECASE))
+            df[sw.strip()] = occurrences
+        return df
 
-    def _add_to_search_word_counts(self, log_file, total_count, search_word_counts):
-        data = {"Log File": log_file, "Total Count": total_count, **search_word_counts}
-        self.search_word_counts = self.search_word_counts.append(
-            data, ignore_index=True
+    def _add_to_df(self, log_file, total_count, df):
+        data = {"Log File": log_file, "Total Count": total_count, **df}
+        self.df = self.df.append(data, ignore_index=True)
+
+    def _write_csv_file(self):
+        csv_filepath = self._create_filepath()
+        self.df.to_csv(csv_filepath, index=False)
+        print(f"CSV file '{csv_filepath}' generated successfully.")
+
+    def _create_filepath(self):
+        player_export_folder = os.path.join(
+            get_path_from_config("export_parent_folder"),
+            self.player.name + " export",
         )
-
-    def _write_csv_file(self, csv_filename):
-        self.search_word_counts.to_csv(csv_filename, index=False)
-        print(f"CSV file '{csv_filename}' generated successfully.")
+        create_directory(player_export_folder)
+        file_name = f"{self.player.name}_export_{get_date()}.csv"
+        file_path = os.path.join(player_export_folder, file_name)
+        return file_path
