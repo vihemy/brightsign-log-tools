@@ -50,7 +50,7 @@ class LogDownloader:
         json_data = json.loads(t)
         return json_data
 
-    def _get_log_names(json_data):
+    def _get_log_names(self, json_data):
         """Return a list of log names from given json object"""
         logs = json_data["data"]["result"]["files"]
         log_count = len(logs)
