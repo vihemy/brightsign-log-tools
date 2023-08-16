@@ -13,3 +13,7 @@
 8. Test log_downloader when on KC network
 
 9. Contemplate whether to use one config/player-idex file for all data or split up in a seperate player-database and config-file.
+
+10. Rewrite log_downloader to use requests or urllib to download logs directly to appropriate folder. This makes logmove obsolete.
+
+11. Remove https in requests.get to speed up download?
