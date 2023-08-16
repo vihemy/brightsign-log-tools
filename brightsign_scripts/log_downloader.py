@@ -33,14 +33,21 @@ class LogDownloader:
             json_data = self._get_json()
         except requests.Timeout:
             print(f"\nCould not connect to player with name: {self.player.name}")
+            return
 
         try:
             log_names: list = self._get_log_names(json_data)
         except KeyError:
-            print(f"\nNo logs found on player with name: {self.player.name}")
-
-        self._open_download_url(log_names)
-        print(f"\nDownload of player with name: {self.player.name} complete")
+            print(f"\nNo logs found on player with name: {self.player.name}. Continuing to next player.")
+            return
+        
+        try:
+            self._open_download_url(log_names)
+        except UnboundLocalError as err:
+            print(err)
+            return
+        else:
+            print(f"\nDownload of player with name: {self.player.name} complete")
 
     def _get_json(self):
         """Return json object containing given Brightsign player's log info from Diagnostic Web Server"""
@@ -50,7 +57,7 @@ class LogDownloader:
         json_data = json.loads(t)
         return json_data
 
-    def _get_log_names(self, json_data):
+    def _get_log_names(self,json_data):
         """Return a list of log names from given json object"""
         logs = json_data["data"]["result"]["files"]
         log_count = len(logs)
