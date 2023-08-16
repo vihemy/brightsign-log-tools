@@ -6,3 +6,5 @@ brightsign_logs/
 
 # ignore local README
 README.md
+#ignore pycache-files
+__pycache__/
