@@ -22,3 +22,7 @@ class Player:
         self.serial = serial
         self.searchwords = searchwords
         self.headers = headers
+
+        # Needs str conversion to avoid "AttributeError: 'float' object has no attribute 'split'"
+        self.searchword_list = str(searchwords).split(",")
+        self.header_list = str(headers).split(",")
