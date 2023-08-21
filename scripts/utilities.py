@@ -43,10 +43,10 @@ def get_player_instances_from_index(index_path):
     """Return a list of instances of type Player from a given index file."""
     df = pd.read_excel(
         str(index_path),
-        usecols=["Navn", "IP-adresse", "Serienummer", "Søgeord"],
+        usecols=["Navn", "IP-adresse", "Serienummer"],
     )
     players = df.values.tolist()
-    player_instances = []
+    player_instances: list[Player] = []
     for player in players:
         # unpacks values from the each item in players-list inside
         # an instance of the Player-class and appends to list
