@@ -39,9 +39,11 @@ class LogDownloader:
         try:
             log_names: list = self._get_log_names(json_data)
         except KeyError:
-            print(f"\nNo logs found on player with name: {self.player.name}. Continuing to next player.")
+            print(
+                f"\nNo logs found on player with name: {self.player.name}. Continuing to next player."
+            )
             return
-        
+
         try:
             self._download_to_folder(log_names)
         except UnboundLocalError as err:
@@ -58,7 +60,7 @@ class LogDownloader:
         json_data = json.loads(t)
         return json_data
 
-    def _get_log_names(self,json_data):
+    def _get_log_names(self, json_data):
         """Return a list of log names from given json object"""
         logs = json_data["data"]["result"]["files"]
         log_count = len(logs)
@@ -83,10 +85,10 @@ class LogDownloader:
 
     def _create_log_file_path(self, log_name):
         """Create and return a file path for a given log name"""
-        log_parent_folder = get_path_from_config("log_destination_parent_folder")
+        log_parent_folder = get_path_from_config("log_parent_folder")
         log_file_path = log_parent_folder + f"/{self.player.name}" + f"/{log_name}"
         return log_file_path
-    
+
     def _open_download_url(self, log_names):
         """Open a download url for each log in given list of log names. (Faster than downloading to folder with requests, but opens a webbrowser to do it.)"""
         # url_eksempel: "http://10.0.1.115/api/v1/files/sd/logs/BrightSignLog.TKD1CN002225-220919000.log?contents&stream"
