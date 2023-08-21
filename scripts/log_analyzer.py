@@ -28,14 +28,8 @@ class LogAnalyzer:
         as well as the total count of all appearances of the search words.
     """
 
-    def __init__(self, player: Player, file_directory):
+    def __init__(self, player: Player):
         self.player = player
-        self.file_directory = file_directory
-        self.df = pd.DataFrame(
-            columns=["Log File", "Total Count"]
-            + [word.strip() for word in self.player.searchwords.split(",")]
-        )
-        self.total_count = 0
 
     def analyze_logs_and_generate_csv(self):
         log_files = self._get_log_files()

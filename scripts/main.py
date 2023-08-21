@@ -7,10 +7,10 @@ from player import Player
 
 def main():
     player_instances = get_player_instances()
-    print_players(player_instances)
+    # print_players(player_instances)
     # download_logs(player_instances)
     # move_logs(player_instances)
-    # analyze_logs(player_instances)
+    analyze_logs(player_instances)
 
 
 def get_player_instances():
@@ -39,11 +39,12 @@ def move_logs(player_instances: list[Player]):
 
 def analyze_logs(player_instances: list[Player]):
     """Use LogAnalyzer-class to analyze logs belonging to each player-instance on a list and create a CSV file with the total count of occurrences + each search word"""
-    log_parent_folder = utilities.get_path_from_config("log_destination_parent_folder")
-
     for player in player_instances:
-        analyzer = LogAnalyzer(player, log_parent_folder)
-        analyzer.analyze_logs_and_generate_csv()
+        analyzer = LogAnalyzer(player)
+        # analyzer.analyze_logs_and_generate_csv()
+        print(
+            analyzer.player.name, analyzer.player.searchwords, analyzer.player.headers
+        )
 
 
 def print_players(player_instances: list[Player]):

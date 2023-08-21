@@ -44,7 +44,7 @@ def get_player_instances_from_index(index_path):
     df = pd.read_excel(
         str(index_path),
         sheet_name="Players",
-        usecols=["Navn", "IP-adresse", "Serienummer"],
+        usecols=["Navn", "IP-adresse", "Serienummer", "Søgeord", "Overskrifter"],
     )
     players = df.values.tolist()
     player_instances: list[Player] = []
