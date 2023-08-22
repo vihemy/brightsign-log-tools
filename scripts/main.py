@@ -7,10 +7,9 @@ from player import Player
 
 def main():
     player_instances = get_player_instances()
-    # print_players(player_instances)
     # download_logs(player_instances)
     # move_logs(player_instances)
-    analyze_logs(player_instances)
+    analyze_logs_test(player_instances)
 
 
 def get_player_instances():
@@ -30,11 +29,16 @@ def download_logs(player_instances: list[Player]):
 def move_logs(player_instances: list[Player]):
     """Move all logs from a given list of BrightSign players to a destination directory configured in config.ini"""
     src_folder = utilities.get_path_from_config("log_source_directory")
-    dst_parent_folder = utilities.get_path_from_config("log_destination_parent_folder")
+    dst_parent_folder = utilities.get_path_from_config("log_parent_folder")
 
     for player in player_instances:
         mover = LogMover(player, src_folder, dst_parent_folder)
         mover.relocate_logs()
+
+
+def analyze_logs_test(player_instances: list[Player]):
+    analyzer = LogAnalyzer(player_instances[0])
+    analyzer.analyze_logs_and_generate_csv()
 
 
 def analyze_logs(player_instances: list[Player]):
@@ -43,7 +47,10 @@ def analyze_logs(player_instances: list[Player]):
         analyzer = LogAnalyzer(player)
         # analyzer.analyze_logs_and_generate_csv()
         print(
-            analyzer.player.name, analyzer.player.searchwords, analyzer.player.headers
+            analyzer.player.name,
+            analyzer.player.searchwords,
+            analyzer.player.headers,
+            analyzer.log_directory,
         )
 
 
