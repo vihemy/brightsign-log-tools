@@ -2,10 +2,11 @@
 import requests
 import json
 import webbrowser
+import http.client
 
 # Internal modules
 from player import Player
-from utilities import get_path_from_config
+from utilities import get_path_from_config, create_directory, send_email
 
 
 class LogDownloader:
@@ -27,30 +28,27 @@ class LogDownloader:
         self.player = player
 
     def download_logs(self):
-        """Download all logs from a given BrightSign players log directory via Brightsign's Diagnostic Web Server"""
-        print(f"\nAttempting downloading logs from player: {self.player.name}")
-
+        """Download all logs from a given BrightSign players log directory via Brightsign's Diagnostic Web Server.
+        Returns systemLog for export to email or log file"""
         try:
-            json_data = self._get_json()
-        except requests.Timeout:
-            print(f"\nCould not connect to player with name: {self.player.name}")
-            return
-
-        try:
-            log_names: list = self._get_log_names(json_data)
-        except KeyError:
-            print(
-                f"\nNo logs found on player with name: {self.player.name}. Continuing to next player."
-            )
-            return
-
-        try:
-            self._download_to_folder(log_names)
+            try:
+                json_data = self._get_json()
+                log_names: list = self._get_log_names(json_data)
+                count = self._download_to_folder(log_names)
+                msg = f"Download of player with name: {self.player.name} complete. Logs downloaded: {count + 1}\n"
+            except (
+                requests.Timeout,
+                requests.ConnectionError,
+                http.client.RemoteDisconnected,
+            ) as err:
+                msg = f"Could not connect to player with name: {self.player.name} \n Error messag: {err}\n"
+            except KeyError:
+                msg = f"No logs found on player with name: {self.player.name}. Continuing to next player.\n"
         except UnboundLocalError as err:
-            print(err)
-            return
-        else:
-            print(f"\nDownload of player with name: {self.player.name} complete")
+            msg = err
+        finally:
+            print(msg)
+            return msg
 
     def _get_json(self):
         """Return json object containing given Brightsign player's log info from Diagnostic Web Server"""
@@ -76,18 +74,21 @@ class LogDownloader:
         """Open a download url for each log in given list of log names using requests and write to file. (Slower than opening a download url in browser, but doesn't open webbrowser)"""
         # url_eksempel: "http://10.0.1.115/api/v1/files/sd/logs/BrightSignLog.TKD1CN002225-220919000.log?contents&stream"
 
-        for log_name in log_names:
-            log_file_path = self._create_log_file_path(log_name)
+        for i, log_name in enumerate(log_names):
+            file_path = self._create_log_file_path(log_name)
 
             url = f"http://{self.player.ip}/api/v1/files/sd/logs/{log_name}?contents&stream"
             r = requests.get(url, allow_redirects=True)
-            open(log_file_path, "wb").write(r.content)
+            open(file_path, "wb").write(r.content)
+        return i
 
     def _create_log_file_path(self, log_name):
         """Create and return a file path for a given log name"""
         log_parent_folder = get_path_from_config("log_parent_folder")
-        log_file_path = log_parent_folder + f"/{self.player.name}" + f"/{log_name}"
-        return log_file_path
+        log_player_folder = log_parent_folder + f"/{self.player.name}"
+        create_directory(log_player_folder)
+        file_path = log_player_folder + f"/{log_name}"
+        return file_path
 
     def _open_download_url(self, log_names):
         """Open a download url for each log in given list of log names. (Faster than downloading to folder with requests, but opens a webbrowser to do it.)"""
