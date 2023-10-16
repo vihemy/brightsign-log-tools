@@ -7,9 +7,9 @@ from player import Player
 
 def main():
     player_instances = get_player_instances()
-    # download_logs(player_instances)
-    # move_logs(player_instances)
-    analyze_logs_test(player_instances)
+    download_all_logs(player_instances)
+    # download_specified_logs(player_instances)
+    # analyze_logs_test(player_instances)
 
 
 def get_player_instances():
@@ -19,11 +19,20 @@ def get_player_instances():
     return player_instances
 
 
-def download_logs(player_instances: list[Player]):
+def download_all_logs(player_instances: list[Player]):
     """Download all logs from a given list of BrightSign players via Brightsign's Diagnostic Web Server"""
+    systemLog: str = ""
     for player in player_instances:
         downloader = LogDownloader(player)
-        downloader.download_logs()
+        systemLog += downloader.download_logs()
+    utilities.send_email(f"BS LogDownloader SystemLog {utilities.get_date()}", systemLog)
+
+
+def download_specified_logs(player_instances: list[Player]):
+    """Download logs from specified BrightSign players via Brightsign's Diagnostic Web Server"""
+    player = player_instances[7]
+    downloader = LogDownloader(player)
+    downloader.download_logs()
 
 
 def move_logs(player_instances: list[Player]):
