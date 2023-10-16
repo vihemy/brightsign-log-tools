@@ -2,6 +2,7 @@
 import os
 import pandas as pd
 import smtplib
+import sys
 from configparser import ConfigParser
 from datetime import date
 from pathlib import Path
@@ -42,6 +43,13 @@ def get_date():
     return today
 
 
+def get_date2():
+    """Return today's date in format (yymmdd)."""
+    today = date.today()
+    today = today.strftime("%Y%m%d")
+    return today
+
+
 def shorten_filename(filename):
     """Return a shortened version of a given filename (using the final component of the path)."""
     filenameShort = os.path.basename(filename)
@@ -68,6 +76,17 @@ def get_player_instances_from_index(index_path):
         # an instance of the Player-class and appends to list
         player_instances.append(Player(*player))
     return player_instances
+
+
+def get_app_folder():
+    """Return the path to the folder containing the application."""
+    if getattr(sys, "frozen", False):
+        # If the application is run as a -onefile (pyinstaller) the path is different than if run as a script
+        app_dir = os.path.dirname(sys.executable)
+    # If not the application is run as onefile (pyinstaller) the path is set to the parent directory of this script
+    else:
+        app_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    return app_dir
 
 
 def send_email(subject: str, message: str):
