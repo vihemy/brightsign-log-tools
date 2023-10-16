@@ -11,6 +11,7 @@ from email.mime.multipart import MIMEMultipart
 # Internal modules
 from player import Player
 
+
 # DELETE THIS AND REPLACE USECASES WITH GET_DATA_FROM_CONFIG
 def get_path_from_config(config_key):
     """Return a file path from a given key in config.ini."""
@@ -30,7 +31,7 @@ def get_data_from_config(config_key):
     config_path = os.path.join(ROOT_DIR, "config.ini")
     parser = ConfigParser()
     parser.read(config_path)
-    data = parser.get("credentials", config_key)
+    data = parser.get("mail", config_key)
     return data
 
 
@@ -71,8 +72,8 @@ def get_player_instances_from_index(index_path):
 
 def send_email(subject: str, message: str):
     # Set up the SMTP server
-    smtp_server = "smtp.gmail.com"
-    smtp_port = 587
+    smtp_server = get_data_from_config("email_server")
+    smtp_port = get_data_from_config("email_port")
     smtp_username = get_data_from_config("email_from")
     smtp_password = get_data_from_config("email_password")
 
