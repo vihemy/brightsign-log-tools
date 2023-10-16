@@ -29,7 +29,7 @@ class LogDownloader:
 
     def download_logs(self):
         """Download all logs from a given BrightSign players log directory via Brightsign's Diagnostic Web Server.
-        Returns systemLog for export to email or log file"""
+        Returns report for export to email or log file"""
         try:
             try:
                 json_data = self._get_json()
