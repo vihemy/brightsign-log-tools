@@ -3,6 +3,7 @@ from log_downloader import LogDownloader
 from log_mover import LogMover
 from log_analyzer import LogAnalyzer
 from player import Player
+from reporter import Reporter
 
 
 def main():
@@ -21,18 +22,21 @@ def get_player_instances():
 
 def download_all_logs(player_instances: list[Player]):
     """Download all logs from a given list of BrightSign players via Brightsign's Diagnostic Web Server"""
-    systemLog: str = ""
+    report: str = ""
     for player in player_instances:
         downloader = LogDownloader(player)
-        systemLog += downloader.download_logs()
-    utilities.send_email(f"BS LogDownloader SystemLog {utilities.get_date()}", systemLog)
+        report += downloader.download_logs()
+    save_and_send_report(report)
 
 
 def download_specified_logs(player_instances: list[Player]):
     """Download logs from specified BrightSign players via Brightsign's Diagnostic Web Server"""
+    report: str = ""
     player = player_instances[7]
     downloader = LogDownloader(player)
-    downloader.download_logs()
+
+    report += downloader.download_logs()
+    save_and_send_report(report)
 
 
 def move_logs(player_instances: list[Player]):
@@ -61,6 +65,12 @@ def analyze_logs(player_instances: list[Player]):
             analyzer.player.headers,
             analyzer.log_directory,
         )
+
+
+def save_and_send_report(report: str):
+    reporter = Reporter(report)
+    reporter.save_to_file()
+    reporter.send_as_email()
 
 
 def print_players(player_instances: list[Player]):
