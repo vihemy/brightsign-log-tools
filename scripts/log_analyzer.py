@@ -14,8 +14,8 @@ class LogAnalyzer:
     def __init__(self, player: Player):
         self.player = player
         self.log_directory = self.get_log_directory()
-        self.log_names = self.get_log_names()
-        self.log_paths = self.get_log_paths()
+        self.log_names = self._get_log_names()
+        self.log_paths = self._get_log_paths()
 
     def get_log_directory(self):
         """Return directory containing the log files to analyze."""
@@ -24,7 +24,7 @@ class LogAnalyzer:
         )
         return log_directory
 
-    def get_log_names(self):
+    def _get_log_names(self):
         log_names = [
             filename
             for filename in os.listdir(self.log_directory)
@@ -32,7 +32,7 @@ class LogAnalyzer:
         ]
         return log_names
 
-    def get_log_paths(self):
+    def _get_log_paths(self):
         log_paths = [
             os.path.join(self.log_directory, log_name) for log_name in self.log_names
         ]
@@ -45,18 +45,12 @@ class LogAnalyzer:
         for log_name in self.log_names:
             # Open log file and read content
             log_content = self._read_log_content(log_name)
-            # Count occurences of each search word in log file
-            counts = self._count_searchwords(log_content)
             # append date to data dict
             date = self._extract_date(log_content)
-            data["Date"].append(date)
-
-            # Add counts to data dict
-            for i, sw in enumerate(self.player.searchword_list):
-                if sw in data:
-                    data[sw].append(counts[i])
-                else:
-                    data[sw] = [counts[i]]
+            # Count occurences of each search word in log file
+            counts = self._count_searchwords(log_content)
+            # Add date and counts to data dict
+            self._add_date_and_counts_to_data(data, date, counts)
 
         df = self._convert_data_to_df(data)
         print(df)
@@ -67,16 +61,11 @@ class LogAnalyzer:
             data[searchword] = []
         return data
 
-    def _convert_data_to_df(self, data):
-        # Create dataframe from data dict
-        df = pd.DataFrame(data)
-        # Group by date and sum
-        df.groupby("Date").sum()
-        # Add total row
-        df.loc["Total"] = df.sum(numeric_only=True)
-        # Convert searchword columns to int
-        df[self.player.searchword_list] = df[self.player.searchword_list].astype(int)
-        return df
+    def _read_log_content(self, log_name):
+        log_file_path = os.path.join(self.log_directory, log_name)
+        with open(log_file_path, "r") as log_file:
+            log_content = log_file.read()
+        return log_content
 
     def _count_searchwords(self, log_content):
         """Return a list of the number of occurences of each search word in a given log file."""
@@ -91,11 +80,31 @@ class LogAnalyzer:
         date = date_matches[0] if date_matches else "N/A"
         return date
 
-    def _read_log_content(self, log_name):
-        log_file_path = os.path.join(self.log_directory, log_name)
-        with open(log_file_path, "r") as log_file:
-            log_content = log_file.read()
-        return log_content
+    def _add_date_and_counts_to_data(self, data: dict[str, list], date, counts):
+        self._add_date_to_data(data, date)
+        self._add_counts_to_data(data, counts)
+
+    def _add_date_to_data(self, data: dict[str, list], date):
+        data["Date"].append(date)
+
+    def _add_counts_to_data(self, data: dict[str, list], counts):
+        # Add counts to data dict
+        for i, sw in enumerate(self.player.searchword_list):
+            if sw in data:
+                data[sw].append(counts[i])
+            else:
+                data[sw] = [counts[i]]
+
+    def _convert_data_to_df(self, data):
+        # Create dataframe from data dict
+        df = pd.DataFrame(data)
+        # Group by date and sum
+        df.groupby("Date").sum()
+        # Add total row
+        df.loc["Total"] = df.sum(numeric_only=True)
+        # Convert searchword columns to int
+        df[self.player.searchword_list] = df[self.player.searchword_list].astype(int)
+        return df
 
     # def _add_count_to_df(self, log_content):
     #     for searchword in self.player.searchword_list:
