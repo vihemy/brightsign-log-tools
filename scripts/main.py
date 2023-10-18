@@ -26,6 +26,7 @@ def download_all_logs(player_instances: list[Player]):
     for player in player_instances:
         downloader = LogDownloader(player)
         report += downloader.download_logs()
+    report += "All downloads complete"
     save_and_send_report(report)
 
 
