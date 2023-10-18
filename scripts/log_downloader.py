@@ -6,7 +6,7 @@ import http.client
 
 # Internal modules
 from player import Player
-from utilities import get_path_from_config, create_directory, send_email
+from utilities import get_data_from_config, create_directory, send_email
 
 
 class LogDownloader:
@@ -35,7 +35,7 @@ class LogDownloader:
                 json_data = self._get_json()
                 log_names: list = self._get_log_names(json_data)
                 count = self._download_to_folder(log_names)
-                msg = f"Download of player with name: {self.player.name} complete. Logs downloaded: {count + 1}\n"
+                msg = f"{self.player.name} download complete. {count + 1} logs downloadet\n"
             except (
                 requests.Timeout,
                 requests.ConnectionError,
@@ -84,7 +84,7 @@ class LogDownloader:
 
     def _create_log_file_path(self, log_name):
         """Create and return a file path for a given log name"""
-        log_parent_folder = get_path_from_config("log_parent_folder")
+        log_parent_folder = get_data_from_config("file_paths", "log_parent_folder")
         log_player_folder = log_parent_folder + f"/{self.player.name}"
         create_directory(log_player_folder)
         file_path = log_player_folder + f"/{log_name}"

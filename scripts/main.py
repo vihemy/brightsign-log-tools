@@ -15,7 +15,7 @@ def main():
 
 def get_player_instances():
     """Return a list of instances of type Player using player-data found through config.ini."""
-    index_path = utilities.get_path_from_config("player_index_path")
+    index_path = utilities.get_data_from_config("file_paths", "player_index_path")
     player_instances = utilities.get_player_instances_from_index(index_path)
     return player_instances
 
@@ -41,8 +41,8 @@ def download_specified_logs(player_instances: list[Player]):
 
 def move_logs(player_instances: list[Player]):
     """Move all logs from a given list of BrightSign players to a destination directory configured in config.ini"""
-    src_folder = utilities.get_path_from_config("log_source_directory")
-    dst_parent_folder = utilities.get_path_from_config("log_parent_folder")
+    src_folder = utilities.get_data_from_config("file_paths", "log_source_directory")
+    dst_parent_folder = utilities.get_data_from_config("file_paths", "log_parent_folder")
 
     for player in player_instances:
         mover = LogMover(player, src_folder, dst_parent_folder)

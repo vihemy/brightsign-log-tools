@@ -6,7 +6,7 @@ import pandas as pd
 # Internal modules
 from player import Player
 from utilities import get_date
-from utilities import get_path_from_config
+from utilities import get_data_from_config
 from utilities import create_directory
 
 
@@ -20,7 +20,7 @@ class LogAnalyzer:
     def get_log_directory(self):
         """Return directory containing the log files to analyze."""
         log_directory = os.path.join(
-            get_path_from_config("log_parent_folder"), self.player.name
+            get_data_from_config("file_paths", "log_parent_folder"), self.player.name
         )
         return log_directory
 
@@ -137,7 +137,7 @@ class LogAnalyzer:
 
     # def _create_filepath(self):
     #     player_export_folder = os.path.join(
-    #         get_path_from_config("export_parent_folder"),
+    #         get_data_from_config("export_parent_folder"),
     #         self.player.name + " export",
     #     )
     #     create_directory(player_export_folder)

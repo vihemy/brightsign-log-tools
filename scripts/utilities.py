@@ -13,26 +13,14 @@ from email.mime.multipart import MIMEMultipart
 from player import Player
 
 
-# DELETE THIS AND REPLACE USECASES WITH GET_DATA_FROM_CONFIG
-def get_path_from_config(config_key):
+def get_data_from_config(section: str, key: str):
     """Return a file path from a given key in config.ini."""
     this_file = Path(__file__)
     ROOT_DIR = this_file.parent.parent.absolute()
     config_path = os.path.join(ROOT_DIR, "config.ini")
     parser = ConfigParser()
     parser.read(config_path)
-    file_path = parser.get("file_paths", config_key)
-    return file_path
-
-
-def get_data_from_config(config_key):
-    """Return a file path from a given key in config.ini."""
-    this_file = Path(__file__)
-    ROOT_DIR = this_file.parent.parent.absolute()
-    config_path = os.path.join(ROOT_DIR, "config.ini")
-    parser = ConfigParser()
-    parser.read(config_path)
-    data = parser.get("mail", config_key)
+    data = parser.get(section, key)
     return data
 
 
@@ -91,15 +79,15 @@ def get_app_folder():
 
 def send_email(subject: str, message: str):
     # Set up the SMTP server
-    smtp_server = get_data_from_config("email_server")
-    smtp_port = get_data_from_config("email_port")
-    smtp_username = get_data_from_config("email_from")
-    smtp_password = get_data_from_config("email_password")
+    smtp_server = get_data_from_config("mail", "email_server")
+    smtp_port = get_data_from_config("mail", "email_port")
+    smtp_username = get_data_from_config("mail", "email_from")
+    smtp_password = get_data_from_config("mail", "email_password")
 
     # Set up the email message
     msg = MIMEMultipart()
-    msg["From"] = get_data_from_config("email_from")
-    msg["To"] = get_data_from_config("email_to")
+    msg["From"] = get_data_from_config("mail", "email_from")
+    msg["To"] = get_data_from_config("mail", "email_to")
     msg["Subject"] = subject
     body = message
     msg.attach(MIMEText(body, "plain"))
