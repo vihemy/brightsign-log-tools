@@ -1,4 +1,5 @@
 # External modules
+import os
 import requests
 import json
 import webbrowser
@@ -34,8 +35,8 @@ class LogDownloader:
             try:
                 json_data = self._get_json()
                 log_names: list = self._get_log_names(json_data)
-                count = self._download_to_folder(log_names)
-                msg = f"{self.player.name} download complete. {count + 1} logs downloadet\n"
+                new_log_count = self._download_to_folder(log_names)
+                msg = f"{self.player.name} download complete. {new_log_count} new logs downloadet\n"
             except (
                 requests.Timeout,
                 requests.ConnectionError,
@@ -73,14 +74,16 @@ class LogDownloader:
     def _download_to_folder(self, log_names):
         """Open a download url for each log in given list of log names using requests and write to file. (Slower than opening a download url in browser, but doesn't open webbrowser)"""
         # url_eksempel: "http://10.0.1.115/api/v1/files/sd/logs/BrightSignLog.TKD1CN002225-220919000.log?contents&stream"
-
-        for i, log_name in enumerate(log_names):
+        new_log_count = 0
+        for log_name in log_names:
             file_path = self._create_log_file_path(log_name)
-
-            url = f"http://{self.player.ip}/api/v1/files/sd/logs/{log_name}?contents&stream"
-            r = requests.get(url, allow_redirects=True)
-            open(file_path, "wb").write(r.content)
-        return i
+            if not os.path.isfile(file_path):
+                url = f"http://{self.player.ip}/api/v1/files/sd/logs/{log_name}?contents&stream"
+                r = requests.get(url, allow_redirects=True)
+                with open(file_path, "wb") as f:
+                    f.write(r.content)
+                new_log_count += 1
+        return new_log_count
 
     def _create_log_file_path(self, log_name):
         """Create and return a file path for a given log name"""
