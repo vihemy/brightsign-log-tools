@@ -42,7 +42,9 @@ def download_specified_logs(player_instances: list[Player]):
 def move_logs(player_instances: list[Player]):
     """Move all logs from a given list of BrightSign players to a destination directory configured in config.ini"""
     src_folder = utilities.get_data_from_config("file_paths", "log_source_directory")
-    dst_parent_folder = utilities.get_data_from_config("file_paths", "log_parent_folder")
+    dst_parent_folder = utilities.get_data_from_config(
+        "file_paths", "log_parent_folder"
+    )
 
     for player in player_instances:
         mover = LogMover(player, src_folder, dst_parent_folder)

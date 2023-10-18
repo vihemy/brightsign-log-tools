@@ -14,14 +14,37 @@ from player import Player
 
 
 def get_data_from_config(section: str, key: str):
-    """Return a file path from a given key in config.ini."""
-    this_file = Path(__file__)
-    ROOT_DIR = this_file.parent.parent.absolute()
-    config_path = os.path.join(ROOT_DIR, "config.ini")
+    config_path = _get_config_path()
+    data = _parse_config_file(config_path, section, key)
+    return data
+
+
+def _get_config_path():
+    """Return the path to the config.ini file."""
+    app_dir = get_app_folder()
+    config_path = os.path.join(app_dir, "config.ini")
+    return config_path
+
+
+def _parse_config_file(config_path, section: str, key: str):
+    """Return a ConfigParser instance with the config.ini file parsed."""
     parser = ConfigParser()
     parser.read(config_path)
     data = parser.get(section, key)
     return data
+
+
+def get_app_folder():
+    """Return the path to the folder containing the application."""
+    # determine if app is a script file or frozen exe
+    # if exe
+    if getattr(sys, "frozen", False):
+        app_dir = os.path.dirname(sys.executable)
+    # If script:
+    # # NOTE! Returns the parent to the parent of the current file (because config-file is stored outside of scripts-folder when not build to exe)
+    else:
+        app_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    return app_dir
 
 
 def get_date():
@@ -64,17 +87,6 @@ def get_player_instances_from_index(index_path):
         # an instance of the Player-class and appends to list
         player_instances.append(Player(*player))
     return player_instances
-
-
-def get_app_folder():
-    """Return the path to the folder containing the application."""
-    if getattr(sys, "frozen", False):
-        # If the application is run as a -onefile (pyinstaller) the path is different than if run as a script
-        app_dir = os.path.dirname(sys.executable)
-    # If not the application is run as onefile (pyinstaller) the path is set to the parent directory of this script
-    else:
-        app_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    return app_dir
 
 
 def send_email(subject: str, message: str):
