@@ -6,5 +6,9 @@ brightsign_logs/
 
 # ignore local README
 README.md
+
 #ignore pycache-files
 __pycache__/
+
+#ignore config-file with sensitive data
+config.ini
