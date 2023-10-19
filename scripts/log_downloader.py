@@ -35,7 +35,7 @@ class LogDownloader:
             try:
                 json_data = self._get_json()
                 log_names: list = self._get_log_names(json_data)
-                new_log_count = self._download_to_folder(log_names)
+                new_log_count = self._download_new_logs_to_folder(log_names)
                 msg = f"{self.player.name} download complete. {new_log_count} new logs downloadet\n"
             except (
                 requests.Timeout,
@@ -71,7 +71,7 @@ class LogDownloader:
             x += 1
         return log_names
 
-    def _download_to_folder(self, log_names):
+    def _download_new_logs_to_folder(self, log_names):
         """Open a download url for each log in given list of log names using requests and write to file. (Slower than opening a download url in browser, but doesn't open webbrowser)"""
         # url_eksempel: "http://10.0.1.115/api/v1/files/sd/logs/BrightSignLog.TKD1CN002225-220919000.log?contents&stream"
         new_log_count = 0
