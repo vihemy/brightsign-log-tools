@@ -95,11 +95,12 @@ def send_email(subject: str, message: str):
     smtp_port = get_data_from_config("mail", "email_port")
     smtp_username = get_data_from_config("mail", "email_from")
     smtp_password = get_data_from_config("mail", "email_password")
+    mail_recipient = get_data_from_config("mail", "email_to")
 
     # Set up the email message
     msg = MIMEMultipart()
     msg["From"] = get_data_from_config("mail", "email_from")
-    msg["To"] = get_data_from_config("mail", "email_to")
+    msg["To"] = mail_recipient
     msg["Subject"] = subject
     body = message
     msg.attach(MIMEText(body, "plain"))
@@ -108,4 +109,4 @@ def send_email(subject: str, message: str):
     with smtplib.SMTP(smtp_server, smtp_port) as server:
         server.starttls()
         server.login(smtp_username, smtp_password)
-        server.sendmail(smtp_username, "vhm@kattegatcentret.dk", msg.as_string())
+        server.sendmail(smtp_username, mail_recipient, msg.as_string())
