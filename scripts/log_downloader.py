@@ -7,7 +7,7 @@ import http.client
 
 # Internal modules
 from player import Player
-from utilities import get_data_from_config, create_directory, send_email
+from utilities import get_data_from_config, create_directory
 
 
 class LogDownloader:
