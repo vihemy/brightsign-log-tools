@@ -5,7 +5,6 @@ import smtplib
 import sys
 from configparser import ConfigParser
 from datetime import date
-from pathlib import Path
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 
