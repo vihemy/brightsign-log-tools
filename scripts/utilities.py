@@ -29,7 +29,7 @@ def _parse_config_file(config_path, section: str, key: str):
     """Return a ConfigParser instance with the config.ini file parsed."""
     parser = ConfigParser()
     parser.read(config_path)
-    data = parser.get(section, key)
+    data = parser.get(section, key, vars=os.environ)
     return data
 
 
@@ -109,3 +109,8 @@ def send_email(subject: str, message: str):
         server.starttls()
         server.login(smtp_username, smtp_password)
         server.sendmail(smtp_username, mail_recipient, msg.as_string())
+
+
+def write_to_csv(df: pd.DataFrame, filepath: str):
+    df.to_csv(filepath, index=False)
+    print(f"CSV file '{filepath}' generated successfully.")
