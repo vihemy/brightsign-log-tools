@@ -12,3 +12,9 @@ __pycache__/
 
 #ignore config-file with sensitive data
 config.ini
+
+#ignore reports
+reports/
+
+#ignore executables
+exe/
