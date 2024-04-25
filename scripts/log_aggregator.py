@@ -2,6 +2,33 @@ import re
 import csv
 import os
 
+headers = [
+    "PlayerSerialNumber",
+    "LogType",
+    "Timestamp",
+    "ZoneName",
+    "StartTime",
+    "EndTime",
+    "ContentType",
+    "ContentName",
+    "StateName",
+    "EventType",
+    "EventData",
+    "StateType",
+    "PreviousState",
+    "PreviousEventType",
+    "PreviousEventData",
+]
+
+
+def get_processed_files(log_file):
+    if os.path.exists(log_file):
+        with open(log_file, "r") as file:
+            processed_files = {line.strip() for line in file}
+    else:
+        processed_files = set()
+    return processed_files
+
 
 # Function to extract player serial number and date from the file name
 def extract_info_from_filename(filename):
@@ -118,34 +145,32 @@ def process_state_log(line, csv_writer, serial_number, log_date):
     csv_writer.writerow(data)
 
 
+def update_processed_files(log_file, filename):
+    with open(log_file, "a") as file:
+        file.write(filename + "\n")
+
+
 # Main function to orchestrate log parsing and CSV writing
-def aggregate_logs_to_csv(log_directory, output_csv_path):
-    headers = [
-        "PlayerSerialNumber",
-        "LogType",
-        "Timestamp",
-        "ZoneName",
-        "StartTime",
-        "EndTime",
-        "ContentType",
-        "ContentName",
-        "StateName",
-        "EventType",
-        "EventData",
-        "StateType",
-        "PreviousState",
-        "PreviousEventType",
-        "PreviousEventData",
-    ]
+def aggregate_logs_to_csv(log_directory, output_csv_path, processed_log_file):
+    processed_files = get_processed_files(processed_log_file)
 
-    with open(output_csv_path, "w", newline="") as csv_file:
+    with open(output_csv_path, "a", newline="") as csv_file:  # Open in append mode
         writer = csv.DictWriter(csv_file, fieldnames=headers)
-        writer.writeheader()
+        if os.stat(output_csv_path).st_size == 0:  # If file is empty, write header
+            writer.writeheader()
 
-        # Iterate through all files in the directory
-        for filename in os.listdir(log_directory):
-            file_path = os.path.join(log_directory, filename)
-            parse_log_file(file_path, writer)
+        for dirpath, dirnames, filenames in os.walk(log_directory):
+            for filename in filenames:
+                if filename not in processed_files:
+                    file_path = os.path.join(dirpath, filename)
+                    parse_log_file(file_path, writer)
+                    update_processed_files(processed_log_file, filename)
+
+    print("Log aggregation completed.")
 
 
-aggregate_logs_to_csv("C:/Users/vhm/Desktop/test", "C:/Users/vhm/Desktop/output.csv")
+aggregate_logs_to_csv(
+    "C:/Users/vhm/OneDrive - Kattegatcentret/Udstilling/Brightsign/brightsign_logs&scripts/brightsign_logs",
+    "C:/Users/vhm/OneDrive - Kattegatcentret/Udstilling/Brightsign/brightsign_logs&scripts/aggregated_brightsign_player_logs",
+    "C:/Users/vhm/OneDrive - Kattegatcentret/Udstilling/Brightsign/brightsign_logs&scripts/processed_files.log",
+)
