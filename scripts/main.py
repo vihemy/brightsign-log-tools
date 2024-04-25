@@ -13,6 +13,11 @@ def main():
     # analyze_logs_test(player_instances)
 
 
+def analyze_logs_test(player_instances: list[Player]):
+    analyzer = LogAnalyzer(player_instances[0])
+    analyzer.analyze_logs_and_export()
+
+
 def get_player_instances():
     """Return a list of instances of type Player using player-data found through config.ini."""
     index_path = utilities.get_data_from_config("file_paths", "player_index_path")
@@ -52,16 +57,11 @@ def move_logs(player_instances: list[Player]):
         mover.relocate_logs()
 
 
-def analyze_logs_test(player_instances: list[Player]):
-    analyzer = LogAnalyzer(player_instances[0])
-    analyzer.analyze_logs_and_generate_csv()
-
-
 def analyze_logs(player_instances: list[Player]):
     """Use LogAnalyzer-class to analyze logs belonging to each player-instance on a list and create a CSV file with the total count of occurrences + each search word"""
     for player in player_instances:
         analyzer = LogAnalyzer(player)
-        # analyzer.analyze_logs_and_generate_csv()
+        # analyzer.analyze_logs_and_export()
         print(
             analyzer.player.name,
             analyzer.player.searchwords,
@@ -83,4 +83,8 @@ def print_players(player_instances: list[Player]):
 
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except Exception as e:
+        print(e)
+        utilities.send_email("Error running LogDownloader", e)
