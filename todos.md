@@ -1,5 +1,2 @@
-- Setup device .118 to make logs.
-- Make so exports to have date in name, 
-- Make a universal analyze method for the player-class, that takes search words as arguments.
-    - Either in form of a list, or a searchwords-class, if there is need of multipel search-word functionalities.
-    - Load the searchwords from brightsign-index-file. Create new column for this data.
+- Add power bi file paths to config.ini
+- Implement log-indsamlings filter on player.py
