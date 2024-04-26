@@ -77,7 +77,7 @@ def get_player_instances_from_index(index_path):
     df = pd.read_excel(
         str(index_path),
         sheet_name="Players",
-        usecols=["Navn", "IP-adresse", "Serienummer", "Søgeord", "Overskrifter"],
+        usecols=["Navn", "IP-adresse", "Serienummer", "Log-indsamling"],
     )
     players = df.values.tolist()
     player_instances: list[Player] = []
@@ -87,6 +87,7 @@ def get_player_instances_from_index(index_path):
         player_instances.append(Player(*player))
     return player_instances
 
+
 def get_player_name_from_serial(serial_number):
     index_path = get_data_from_config("file_paths", "player_index_path")
     df = pd.read_excel(
@@ -94,6 +95,7 @@ def get_player_name_from_serial(serial_number):
     )
     player_name = df.loc[df["Serienummer"] == serial_number, "Navn"].values[0]
     return player_name
+
 
 def send_email(subject: str, message: str):
     # Set up the SMTP server

@@ -29,8 +29,9 @@ def download_all_logs(player_instances: list[Player]):
     """Download all logs from a given list of BrightSign players via Brightsign's Diagnostic Web Server"""
     report: str = ""
     for player in player_instances:
-        downloader = LogDownloader(player)
-        report += downloader.download_logs()
+        if player.collect_logs:
+            downloader = LogDownloader(player)
+            report += downloader.download_logs()
     report += "All downloads complete"
     save_and_send_report(report)
 

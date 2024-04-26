@@ -10,19 +10,10 @@ class Player:
         the ip address of the player
     serial : str
         the serial number of the player
-    searchwords : str
-        the searchwords, used in analyzing the players logs
-    headers : str
-        the headers, used in analyzing the players logs
     """
 
-    def __init__(self, name: str, ip: str, serial: str, searchwords: str, headers: str):
+    def __init__(self, name: str, ip: str, serial: str, collect_logs: bool):
         self.name = name
         self.ip = ip
         self.serial = serial
-        self.searchwords = searchwords
-        self.headers = headers
-
-        # Needs str conversion to avoid "AttributeError: 'float' object has no attribute 'split'"
-        self.searchword_list = str(searchwords).split(",")
-        self.header_list = str(headers).split(",")
+        self.collect_logs = collect_logs
