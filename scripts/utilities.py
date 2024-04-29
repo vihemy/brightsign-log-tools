@@ -74,18 +74,31 @@ def create_directory(path):
 
 # OBS! HAS TO REFLECT ORDER OF HEADERS IN EXCEL FILE
 def get_player_instances_from_index(index_path):
-    """Return a list of instances of type Player from a given index file."""
+    PLAYER_COLUMN_MAPPING = {
+        "Navn": "name",
+        "Serienummer": "serial",
+        "IP-adresse": "ip",
+        "Log-indsamling": "collect_logs",
+    }
+
     df = pd.read_excel(
         str(index_path),
         sheet_name="Players",
-        usecols=["Navn", "Serienummer", "IP-adresse", "Log-indsamling"],
+        usecols=list(PLAYER_COLUMN_MAPPING.keys()),  # Use keys from the mapping
     )
-    players = df.values.tolist()
-    player_instances: list[Player] = []
-    for player in players:
-        # unpacks values from the each item in players-list inside
-        # an instance of the Player-class and appends to list
-        player_instances.append(Player(*player))
+
+    if not all(column in df for column in PLAYER_COLUMN_MAPPING.keys()):
+        raise ValueError(
+            "One or more required columns in BrightSign Index are missing."
+        )
+
+    player_instances = []
+    for _, row in df.iterrows():
+        player_kwargs = {
+            PLAYER_COLUMN_MAPPING[col]: row[col] for col in PLAYER_COLUMN_MAPPING
+        }
+        player_instances.append(Player(**player_kwargs))
+
     return player_instances
 
 
