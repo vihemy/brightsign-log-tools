@@ -72,12 +72,13 @@ def create_directory(path):
         os.makedirs(path)
 
 
+# OBS! HAS TO REFLECT ORDER OF HEADERS IN EXCEL FILE
 def get_player_instances_from_index(index_path):
     """Return a list of instances of type Player from a given index file."""
     df = pd.read_excel(
         str(index_path),
         sheet_name="Players",
-        usecols=["Navn", "IP-adresse", "Serienummer", "Log-indsamling"],
+        usecols=["Navn", "Serienummer", "IP-adresse", "Log-indsamling"],
     )
     players = df.values.tolist()
     player_instances: list[Player] = []
