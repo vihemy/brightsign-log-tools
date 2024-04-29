@@ -12,8 +12,8 @@ class Player:
         the serial number of the player
     """
 
-    def __init__(self, name: str, ip: str, serial: str, collect_logs: bool):
+    def __init__(self, name: str, serial: str, ip: str, collect_logs: bool):
         self.name = name
-        self.ip = ip
         self.serial = serial
+        self.ip = ip
         self.collect_logs = collect_logs
