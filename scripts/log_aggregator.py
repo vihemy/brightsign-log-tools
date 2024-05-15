@@ -2,6 +2,8 @@ import re
 import csv
 import os
 
+from utilities import get_data_from_config
+
 headers = [
     "PlayerSerialNumber",
     "LogType",
@@ -151,7 +153,7 @@ def update_processed_files(log_file, filename):
 
 
 # Main function to orchestrate log parsing and CSV writing
-def aggregate_logs_to_csv(log_directory, output_csv_path, processed_log_file):
+def main(log_directory: str, output_csv_path: str, processed_log_file: str):
     processed_files = get_processed_files(processed_log_file)
 
     with open(output_csv_path, "a", newline="") as csv_file:  # Open in append mode
@@ -169,8 +171,8 @@ def aggregate_logs_to_csv(log_directory, output_csv_path, processed_log_file):
     print("Log aggregation completed.")
 
 
-aggregate_logs_to_csv(
-    "C:/Users/vhm/OneDrive - Kattegatcentret/Udstilling/Brightsign/brightsign_logs&scripts/brightsign_logs",
-    "C:/Users/vhm/OneDrive - Kattegatcentret/Udstilling/Brightsign/brightsign_logs&scripts/aggregated_brightsign_player_logs",
-    "C:/Users/vhm/OneDrive - Kattegatcentret/Udstilling/Brightsign/brightsign_logs&scripts/processed_files.log",
-)
+log_parent_folder = get_data_from_config("file_paths", "log_parent_folder")
+aggregated_log_file = get_data_from_config("file_paths", "aggregated_logs_path")
+processed_logs = get_data_from_config("file_paths", "processed_logs_path")
+
+main(log_parent_folder, aggregated_log_file, processed_logs)
