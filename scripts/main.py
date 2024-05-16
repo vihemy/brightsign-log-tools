@@ -1,7 +1,5 @@
 import utilities
 from log_downloader import LogDownloader
-from log_mover import LogMover
-from log_analyzer import LogAnalyzer
 from player import Player
 from reporter import Reporter
 
@@ -9,13 +7,6 @@ from reporter import Reporter
 def main():
     player_instances = get_player_instances()
     download_all_logs(player_instances)
-    # download_specified_logs(player_instances)
-    # analyze_logs_test(player_instances)
-
-
-def analyze_logs_test(player_instances: list[Player]):
-    analyzer = LogAnalyzer(player_instances[0])
-    analyzer.analyze_logs_and_export()
 
 
 def get_player_instances():
@@ -46,31 +37,6 @@ def download_specified_logs(player_instances: list[Player]):
     save_and_send_report(report)
 
 
-def move_logs(player_instances: list[Player]):
-    """Move all logs from a given list of BrightSign players to a destination directory configured in config.ini"""
-    src_folder = utilities.get_data_from_config("file_paths", "log_source_directory")
-    dst_parent_folder = utilities.get_data_from_config(
-        "file_paths", "log_parent_folder"
-    )
-
-    for player in player_instances:
-        mover = LogMover(player, src_folder, dst_parent_folder)
-        mover.relocate_logs()
-
-
-def analyze_logs(player_instances: list[Player]):
-    """Use LogAnalyzer-class to analyze logs belonging to each player-instance on a list and create a CSV file with the total count of occurrences + each search word"""
-    for player in player_instances:
-        analyzer = LogAnalyzer(player)
-        # analyzer.analyze_logs_and_export()
-        print(
-            analyzer.player.name,
-            analyzer.player.searchwords,
-            analyzer.player.headers,
-            analyzer.log_directory,
-        )
-
-
 def save_and_send_report(report: str):
     reporter = Reporter(report)
     reporter.save_to_file()
@@ -88,4 +54,4 @@ if __name__ == "__main__":
         main()
     except Exception as e:
         print(e)
-        utilities.send_email("Error running LogDownloader", e)
+        utilities.send_email("Error running LogDownloader:", e)
