@@ -1,3 +1,0 @@
-- Add power bi file paths to config.ini
-- Implement log-indsamlings filter on player.py
-- Make sure no file (not in the output csv or in the processed files) is handled if it not matches the name-filter
