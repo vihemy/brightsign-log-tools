@@ -4,6 +4,11 @@ import os
 
 from utilities import get_data_from_config
 
+# Load configuration settings
+log_parent_folder = get_data_from_config("file_paths", "log_parent_folder")
+aggregated_log_file = get_data_from_config("file_paths", "aggregated_logs_path")
+processed_logs = get_data_from_config("file_paths", "processed_logs_path")
+
 headers = [
     "PlayerSerialNumber",
     "LogType",
@@ -168,13 +173,7 @@ def main(log_directory: str, output_csv_path: str, processed_log_file: str):
                     parse_log_file(file_path, writer)
                     update_processed_files(processed_log_file, filename)
 
-    print("Log aggregation completed.")
+    print(f"Log aggregation finished. Output path: {output_csv_path}")
 
 
-# Load configuration settings
-log_parent_folder = get_data_from_config("file_paths", "log_parent_folder")
-aggregated_log_file = get_data_from_config("file_paths", "aggregated_logs_path")
-processed_logs = get_data_from_config("file_paths", "processed_logs_path")
-
-# Uncomment the following line to run the main function
 main(log_parent_folder, aggregated_log_file, processed_logs)
