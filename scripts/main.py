@@ -4,17 +4,12 @@ from player import Player
 from reporter import Reporter
 import log_aggregator
 
+REPORT_NAME = "LogDownloaderReport"
+
 
 def main():
     player_instances = get_player_instances()
     download_all_logs(player_instances)
-    # download_specified_logs(player_instances, "Farlige Fisk (Lyd)")
-
-    # # Run the log aggregator after all logs have been downloaded
-    # log_parent_folder = utilities.get_data_from_config("file_paths", "log_parent_folder")
-    # aggregated_log_file = utilities.get_data_from_config("file_paths", "aggregated_logs_path")
-    # processed_logs = utilities.get_data_from_config("file_paths", "processed_logs_path")
-    # log_aggregator.main(log_parent_folder, aggregated_log_file, processed_logs)
 
 
 def get_player_instances():
@@ -26,18 +21,30 @@ def get_player_instances():
 
 def download_all_logs(player_instances: list[Player]):
     """Download all logs from a given list of BrightSign players via Brightsign's Diagnostic Web Server"""
-    report: str = ""
+    report_content: str = ""
     for player in player_instances:
         if player.collect_logs:
             downloader = LogDownloader(player)
-            report += downloader.download_logs()
-    report += "All downloads complete"
-    save_and_send_report(report)
+            report_content += downloader.download_logs()
+    report_content += "All downloads complete"
+    save_and_send_report(REPORT_NAME, report_content)
+
+
+def aggregate_all_logs():
+    """Aggregate all logs into a single CSV file."""
+    log_parent_folder = utilities.get_data_from_config(
+        "file_paths", "log_parent_folder"
+    )
+    aggregated_log_file = utilities.get_data_from_config(
+        "file_paths", "aggregated_logs_path"
+    )
+    processed_logs = utilities.get_data_from_config("file_paths", "processed_logs_path")
+    log_aggregator.main(log_parent_folder, aggregated_log_file, processed_logs)
 
 
 def download_specified_logs(player_instances, *specified_names: str):
     """Download logs from specified BrightSign players via Brightsign's Diagnostic Web Server"""
-    report: str = ""
+    report_content: str = ""
 
     # Filter the player instances to include only those whose names are in specified_names
     specified_players = [
@@ -47,14 +54,14 @@ def download_specified_logs(player_instances, *specified_names: str):
     # Iterate over the specified players and download logs
     for player in specified_players:
         downloader = LogDownloader(player)
-        report += downloader.download_logs()
+        report_content += downloader.download_logs()
 
-    # Save and send the consolidated report
-    save_and_send_report(report)
+    # Save and send the consolidated report_content
+    save_and_send_report(REPORT_NAME, report_content)
 
 
-def save_and_send_report(report: str):
-    reporter = Reporter(report)
+def save_and_send_report(name: str, report_content: str):
+    reporter = Reporter(name, report_content)
     reporter.save_to_file()
     reporter.send_as_email()
 

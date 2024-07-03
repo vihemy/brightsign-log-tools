@@ -3,6 +3,10 @@ import csv
 import os
 
 from utilities import get_data_from_config
+from reporter import Reporter
+
+REPORT_NAME = "LogAggregatorReport"
+report_content = ""
 
 # Load configuration settings
 log_parent_folder = get_data_from_config("file_paths", "log_parent_folder")
@@ -157,6 +161,12 @@ def update_processed_files(log_file, filename):
         file.write(filename + "\n")
 
 
+def save_and_send_report(name: str, content: str):
+    reporter = Reporter(name, content)
+    reporter.save_to_file()
+    reporter.send_as_email()
+
+
 def main(log_directory: str, output_csv_path: str, processed_log_file: str):
     """Orchestrates log parsing and CSV writing for an entire directory of log files."""
     processed_files = get_processed_files(processed_log_file)
@@ -173,7 +183,15 @@ def main(log_directory: str, output_csv_path: str, processed_log_file: str):
                     parse_log_file(file_path, writer)
                     update_processed_files(processed_log_file, filename)
 
-    print(f"Log aggregation finished. Output path: {output_csv_path}")
+    report_content = f"Log aggregation complete.\nOutput path: {output_csv_path}.\nTotal nr. of log-files aggregated: {len(get_processed_files(processed_log_file))}"
+    print(report_content)
+    return report_content
 
 
-main(log_parent_folder, aggregated_log_file, processed_logs)
+try:
+    report_content = main(log_parent_folder, aggregated_log_file, processed_logs)
+except Exception as e:
+    report_content = f"Error aggregating logs: {e}"
+finally:
+    print(report_content)
+    save_and_send_report(REPORT_NAME, report_content)
