@@ -188,10 +188,11 @@ def main(log_directory: str, output_csv_path: str, processed_log_file: str):
     return report_content
 
 
-try:
-    report_content = main(log_parent_folder, aggregated_log_file, processed_logs)
-except Exception as e:
-    report_content = f"Error aggregating logs: {e}"
-finally:
-    print(report_content)
-    save_and_send_report(REPORT_NAME, report_content)
+if __name__ == "__main__":
+    try:
+        report_content = main(log_parent_folder, aggregated_log_file, processed_logs)
+    except Exception as e:
+        report_content = f"Error aggregating logs: {e}"
+    finally:
+        print(report_content)
+        save_and_send_report(REPORT_NAME, report_content)
