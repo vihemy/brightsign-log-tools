@@ -4,9 +4,6 @@ Brightsign_player_index.xlsx
 # ignore logs
 brightsign_logs/
 
-# ignore local README
-README.md
-
 #ignore pycache-files
 __pycache__/
 
