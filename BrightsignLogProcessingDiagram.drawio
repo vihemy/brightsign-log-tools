@@ -1,0 +1,125 @@
+<mxfile host="app.diagrams.net" modified="2024-07-08T13:25:38.584Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:127.0) Gecko/20100101 Firefox/127.0" etag="Q6o7GeWaHozWfqSdC6ct" version="24.6.4" type="github">
+  <diagram name="Page-1" id="90a13364-a465-7bf4-72fc-28e22215d7a0">
+    <mxGraphModel dx="1434" dy="866" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1.5" pageWidth="1169" pageHeight="826" background="none" math="0" shadow="0">
+      <root>
+        <mxCell id="0" style=";html=1;" />
+        <mxCell id="1" style=";html=1;" parent="0" />
+        <mxCell id="3a17f1ce550125da-1" value="BrightSign Log Processing" style="whiteSpace=wrap;html=1;shadow=1;fontSize=20;fillColor=#f5f5f5;strokeColor=#666666;strokeWidth=2;dashed=1;" parent="1" vertex="1">
+          <mxGeometry x="445" y="50" width="310" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="3a17f1ce550125da-2" value="&lt;br&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;" style="whiteSpace=wrap;html=1;shadow=1;fontSize=18;fillColor=#f5f5f5;strokeColor=#666666;" parent="1" vertex="1">
+          <mxGeometry x="510" y="180" width="170" height="280" as="geometry" />
+        </mxCell>
+        <mxCell id="rQzNF7PlgnGQwdpqg3Pt-1" value="&lt;div style=&quot;font-size: 18px;&quot;&gt;PC&lt;br&gt;&lt;/div&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;fontSize=18;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="575" y="140" width="50" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="rQzNF7PlgnGQwdpqg3Pt-2" value="&lt;font style=&quot;font-size: 14px;&quot;&gt;Log Downloader&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="535" y="250" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="rQzNF7PlgnGQwdpqg3Pt-3" value="&lt;font style=&quot;font-size: 14px;&quot;&gt;Log Aggregator&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="535" y="360" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="rQzNF7PlgnGQwdpqg3Pt-4" value="&lt;i&gt;Runs via task scheduler:&lt;br&gt;&lt;/i&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="515" y="200" width="160" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="rQzNF7PlgnGQwdpqg3Pt-6" value="&lt;div&gt;BrightSign&lt;/div&gt;&lt;div&gt;Player 1&lt;/div&gt;" style="whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
+          <mxGeometry x="240" y="230" width="80" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="rQzNF7PlgnGQwdpqg3Pt-7" value="&lt;div&gt;BrightSign&lt;/div&gt;&lt;div&gt;Player 2&lt;/div&gt;" style="whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
+          <mxGeometry x="240" y="320" width="80" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="rQzNF7PlgnGQwdpqg3Pt-8" value="&lt;div&gt;BrightSign&lt;/div&gt;&lt;div&gt;Player 3&lt;br&gt;&lt;/div&gt;" style="whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
+          <mxGeometry x="240" y="410" width="80" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="rQzNF7PlgnGQwdpqg3Pt-9" value="" style="endArrow=classic;html=1;rounded=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" target="rQzNF7PlgnGQwdpqg3Pt-2">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="400" y="310" as="sourcePoint" />
+            <mxPoint x="870" y="139.5" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="rQzNF7PlgnGQwdpqg3Pt-10" value="Fetch Logs&#xa;" style="edgeLabel;resizable=0;;align=center;verticalAlign=middle;fontSize=12;labelPosition=center;verticalLabelPosition=middle;" connectable="0" vertex="1" parent="rQzNF7PlgnGQwdpqg3Pt-9">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint y="6" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="rQzNF7PlgnGQwdpqg3Pt-17" value="" style="endArrow=none;html=1;rounded=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" target="rQzNF7PlgnGQwdpqg3Pt-6">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="400" y="310" as="sourcePoint" />
+            <mxPoint x="130" y="260" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="rQzNF7PlgnGQwdpqg3Pt-18" value="" style="endArrow=none;html=1;rounded=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" target="rQzNF7PlgnGQwdpqg3Pt-7">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="400" y="310" as="sourcePoint" />
+            <mxPoint x="330" y="320" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="rQzNF7PlgnGQwdpqg3Pt-19" value="" style="endArrow=none;html=1;rounded=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="400" y="310" as="sourcePoint" />
+            <mxPoint x="320" y="440" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="rQzNF7PlgnGQwdpqg3Pt-20" value="&lt;div&gt;&lt;b&gt;&lt;font style=&quot;font-size: 14px;&quot;&gt;Onedrive&lt;/font&gt;&lt;/b&gt;&lt;/div&gt;&lt;div&gt;&lt;br/&gt;&lt;/div&gt;" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;" vertex="1" parent="1">
+          <mxGeometry x="877" y="320" width="93" height="130" as="geometry" />
+        </mxCell>
+        <mxCell id="rQzNF7PlgnGQwdpqg3Pt-21" value="&lt;i&gt;Udstilling/Brightsign/Player Logs&lt;/i&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="830" y="450" width="200" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="rQzNF7PlgnGQwdpqg3Pt-26" value="" style="endArrow=classic;html=1;rounded=0;exitX=1.008;exitY=0.617;exitDx=0;exitDy=0;entryX=0;entryY=0;entryDx=0;entryDy=15;entryPerimeter=0;exitPerimeter=0;" edge="1" parent="1" source="rQzNF7PlgnGQwdpqg3Pt-2" target="rQzNF7PlgnGQwdpqg3Pt-20">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="900" y="400" as="sourcePoint" />
+            <mxPoint x="950" y="350" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="rQzNF7PlgnGQwdpqg3Pt-27" value="Save log files&#xa;" style="edgeLabel;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=12;labelPosition=center;verticalLabelPosition=middle;" vertex="1" connectable="0" parent="rQzNF7PlgnGQwdpqg3Pt-26">
+          <mxGeometry x="-0.0585" y="2" relative="1" as="geometry">
+            <mxPoint y="6" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="rQzNF7PlgnGQwdpqg3Pt-28" value="" style="endArrow=classic;html=1;rounded=0;entryX=1;entryY=0.25;entryDx=0;entryDy=0;exitX=0;exitY=0;exitDx=0;exitDy=40;exitPerimeter=0;" edge="1" parent="1" source="rQzNF7PlgnGQwdpqg3Pt-20" target="rQzNF7PlgnGQwdpqg3Pt-3">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="900" y="400" as="sourcePoint" />
+            <mxPoint x="950" y="350" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="rQzNF7PlgnGQwdpqg3Pt-29" value="Read Logs" style="edgeLabel;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=12;" vertex="1" connectable="0" parent="rQzNF7PlgnGQwdpqg3Pt-28">
+          <mxGeometry x="-0.0136" y="-6" relative="1" as="geometry">
+            <mxPoint y="4" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="rQzNF7PlgnGQwdpqg3Pt-30" value="" style="endArrow=classic;html=1;rounded=0;exitX=1;exitY=0.75;exitDx=0;exitDy=0;entryX=0;entryY=0;entryDx=0;entryDy=90;entryPerimeter=0;" edge="1" parent="1" source="rQzNF7PlgnGQwdpqg3Pt-3" target="rQzNF7PlgnGQwdpqg3Pt-20">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="900" y="400" as="sourcePoint" />
+            <mxPoint x="950" y="350" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="rQzNF7PlgnGQwdpqg3Pt-33" value="Saves aggregated log file" style="edgeLabel;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=12;labelBorderColor=none;" vertex="1" connectable="0" parent="rQzNF7PlgnGQwdpqg3Pt-30">
+          <mxGeometry x="-0.0045" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="rQzNF7PlgnGQwdpqg3Pt-38" value="" style="endArrow=classic;html=1;rounded=0;entryX=1;entryY=0;entryDx=0;entryDy=0;exitX=0;exitY=1;exitDx=0;exitDy=-15;exitPerimeter=0;" edge="1" parent="1" source="rQzNF7PlgnGQwdpqg3Pt-20" target="rQzNF7PlgnGQwdpqg3Pt-47">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="620" y="480" as="sourcePoint" />
+            <mxPoint x="670" y="590" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="rQzNF7PlgnGQwdpqg3Pt-40" value="Reads aggregated log file" style="edgeLabel;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=12;" vertex="1" connectable="0" parent="rQzNF7PlgnGQwdpqg3Pt-38">
+          <mxGeometry x="-0.1175" y="1" relative="1" as="geometry">
+            <mxPoint x="-15" y="9" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="rQzNF7PlgnGQwdpqg3Pt-47" value="&lt;font size=&quot;1&quot;&gt;&lt;b style=&quot;font-size: 14px;&quot;&gt;PowerBI&lt;/b&gt;&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="520" y="560" width="150" height="75" as="geometry" />
+        </mxCell>
+        <mxCell id="rQzNF7PlgnGQwdpqg3Pt-48" value="(&lt;i style=&quot;font-size: 11px;&quot;&gt;Runs daily)&lt;/i&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="555" y="283" width="80" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="rQzNF7PlgnGQwdpqg3Pt-49" value="&lt;i style=&quot;font-size: 11px;&quot;&gt;(Runs weekly)&lt;br&gt;&lt;/i&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="550" y="394" width="90" height="30" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
