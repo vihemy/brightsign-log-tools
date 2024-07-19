@@ -164,7 +164,7 @@ def update_processed_files(log_file, filename):
 def save_and_send_report(name: str, content: str):
     reporter = Reporter(name, content)
     reporter.save_to_file()
-    reporter.send_as_email()
+    reporter.send_as_email(onlyErrors=True)
 
 
 def main(log_directory: str, output_csv_path: str, processed_log_file: str):
