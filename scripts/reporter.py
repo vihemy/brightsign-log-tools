@@ -17,6 +17,15 @@ class Reporter:
         with open(report_file, "w") as file:
             file.write(self.content)
 
-    def send_as_email(self):
-        """Send a given report as an email."""
-        send_email(self.name, self.content)
+    def send_as_email(self, onlyErrors: bool):
+        """
+        Send the report as an email.
+
+        Args:
+            onlyErrors (bool): If True, only send the report if it contains errors.
+        """
+        if onlyErrors:
+            if "Error" in self.content:
+                send_email(self.name, self.content)
+        else:
+            send_email(self.name, self.content)

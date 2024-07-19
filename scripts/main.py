@@ -63,7 +63,7 @@ def download_specified_logs(player_instances, *specified_names: str):
 def save_and_send_report(name: str, report_content: str):
     reporter = Reporter(name, report_content)
     reporter.save_to_file()
-    reporter.send_as_email()
+    reporter.send_as_email(onlyErrors=True)
 
 
 def print_players(player_instances: list[Player]):
