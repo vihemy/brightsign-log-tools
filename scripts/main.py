@@ -29,7 +29,6 @@ def download_all_logs(player_instances: list[Player]):
             report_content += downloader.download_logs()
     report_content += "All downloads complete"
     return report_content
-    save_and_send_report(REPORT_NAME, report_content)
 
 
 def aggregate_all_logs():
