@@ -38,8 +38,13 @@ def get_processed_files(log_file):
     """Retrieves set of previously processed file names from a log file."""
     processed_files = set()
     if os.path.exists(log_file):
-        with open(log_file, "r") as file:
-            processed_files = {line.strip() for line in file}
+        with open(log_file, "r", encoding="latin-1") as file:
+            for line in file:
+                filename = line.strip()
+                if FILENAME_PATTERN.match(filename):
+                    processed_files.add(filename)
+                else:
+                    print(f"Invalid filename in processed files list: {filename}")
     return processed_files
 
 
@@ -57,7 +62,7 @@ def parse_log_file(file_path, csv_writer):
     if not serial_number:
         return  # Skip if the filename pattern does not match
 
-    with open(file_path, "r") as file:
+    with open(file_path, "r", encoding="latin-1") as file:
         for line in file:
             line = line.strip()
             if "L=p" in line:
@@ -157,7 +162,7 @@ def process_state_log(line, csv_writer, serial_number, log_date):
 
 def update_processed_files(log_file, filename):
     """Updates log file with new entries of processed files."""
-    with open(log_file, "a") as file:
+    with open(log_file, "a", encoding="utf-8") as file:
         file.write(filename + "\n")
 
 
@@ -171,21 +176,28 @@ def main(log_directory: str, output_csv_path: str, processed_log_file: str):
     """Orchestrates log parsing and CSV writing for an entire directory of log files."""
     processed_files = get_processed_files(processed_log_file)
 
-    with open(output_csv_path, "a", newline="") as csv_file:
-        writer = csv.DictWriter(csv_file, fieldnames=headers)
-        if os.stat(output_csv_path).st_size == 0:
-            writer.writeheader()
+    try:
+        with open(output_csv_path, "a", newline="", encoding="utf-8") as csv_file:
+            writer = csv.DictWriter(csv_file, fieldnames=headers)
+            if os.stat(output_csv_path).st_size == 0:
+                writer.writeheader()
 
-        for dirpath, dirnames, filenames in os.walk(log_directory):
-            for filename in filenames:
-                if filename not in processed_files:
-                    file_path = os.path.join(dirpath, filename)
-                    parse_log_file(file_path, writer)
-                    update_processed_files(processed_log_file, filename)
+            for dirpath, dirnames, filenames in os.walk(log_directory):
+                for filename in filenames:
+                    if FILENAME_PATTERN.match(filename):
+                        if filename not in processed_files:
+                            file_path = os.path.join(dirpath, filename)
+                            try:
+                                parse_log_file(file_path, writer)
+                                update_processed_files(processed_log_file, filename)
+                            except Exception as e:
+                                print(f"Error processing file {file_path}: {e}")
 
-    report_content = f"Log aggregation complete.\nOutput path: {output_csv_path}.\nTotal nr. of log-files aggregated: {len(get_processed_files(processed_log_file))}"
-    print(report_content)
-    return report_content
+        report_content = f"Log aggregation complete.\nOutput path: {output_csv_path}.\nTotal nr. of log-files aggregated: {len(get_processed_files(processed_log_file))}"
+        return report_content
+    except Exception as e:
+        print(f"Critical error: {e}")
+        raise
 
 
 if __name__ == "__main__":
