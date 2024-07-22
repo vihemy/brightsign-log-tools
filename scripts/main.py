@@ -9,7 +9,8 @@ REPORT_NAME = "LogDownloaderReport"
 
 def main():
     player_instances = get_player_instances()
-    download_all_logs(player_instances)
+    report_content = download_all_logs(player_instances)
+    return report_content
 
 
 def get_player_instances():
@@ -27,6 +28,7 @@ def download_all_logs(player_instances: list[Player]):
             downloader = LogDownloader(player)
             report_content += downloader.download_logs()
     report_content += "All downloads complete"
+    return report_content
     save_and_send_report(REPORT_NAME, report_content)
 
 
@@ -74,7 +76,9 @@ def print_players(player_instances: list[Player]):
 
 if __name__ == "__main__":
     try:
-        main()
+        report_content = main()
     except Exception as e:
-        print(e)
-        utilities.send_email("Error running LogDownloader:", e)
+        report_content = f"Error downloading logs: {e}"
+    finally:
+        print(report_content)
+        save_and_send_report(REPORT_NAME, report_content)
