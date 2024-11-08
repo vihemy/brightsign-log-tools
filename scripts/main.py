@@ -10,7 +10,7 @@ REPORT_NAME = "LogDownloaderReport"
 def main():
     player_instances = get_player_instances()
     report_content = download_all_logs(player_instances)
-    return report_content
+    save_and_send_report(REPORT_NAME, report_content)
 
 
 def get_player_instances():
