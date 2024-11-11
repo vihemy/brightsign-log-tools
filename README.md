@@ -30,9 +30,3 @@ In `config.ini`, you can set the following parameters:
 ## Dependencies
 - **pandas**
 - **requests**
-
-> To install the required dependencies, you can use:
-> ```bash
-> pip install pandas requests
-> ```
-
